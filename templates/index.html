@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helpdesk Queue</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎫</text></svg>">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="page">
+    <h1>Helpdesk Queue</h1>
+    <p class="subtitle">Sorted automatically: overdue first, then priority, then nearest due time.</p>
+</header>
+
+<main class="page">
+    <section class="add-ticket-card">
+        <h2>New ticket</h2>
+        <form id="ticket-form" novalidate>
+            <div class="form-row">
+                <label for="customer_name">Customer</label>
+                <input type="text" id="customer_name" name="customer_name" placeholder="e.g. Acme Corp" required>
+            </div>
+
+            <div class="form-row">
+                <label for="subject">Problem</label>
+                <input type="text" id="subject" name="subject" placeholder="e.g. Laptop won't boot before demo" required>
+            </div>
+
+            <div class="form-row">
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority" required>
+                    <option value="urgent">Urgent (2h)</option>
+                    <option value="high">High (8h)</option>
+                    <option value="normal" selected>Normal (24h)</option>
+                    <option value="low">Low (72h)</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="assigned_to">Assigned to</label>
+                <input type="text" id="assigned_to" name="assigned_to" placeholder="optional">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="submit-btn">Add ticket</button>
+                <p id="form-error" class="error-text" role="alert"></p>
+            </div>
+        </form>
+    </section>
+
+    <section class="queue-card">
+        <div class="queue-header">
+            <h2>Queue</h2>
+            <button id="refresh-btn" type="button">Refresh</button>
+        </div>
+
+        <div class="table-scroll">
+            <table id="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Problem</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Assigned</th>
+                        <th>Due</th>
+                    </tr>
+                </thead>
+                <tbody id="ticket-table-body">
+                    <!-- rows injected by app.js -->
+                </tbody>
+            </table>
+        </div>
+        <p id="empty-state" class="empty-state" hidden>No tickets yet. Add one above.</p>
+        <p id="load-error" class="load-error" hidden>Couldn't load tickets. Check that the server is running and refresh.</p>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
